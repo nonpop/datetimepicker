@@ -17,6 +17,7 @@ type CssClasses
     | DaysOfWeek
     | PreviousMonth
     | CurrentMonth
+    | WeekNumber
     | Header
     | Body
     | NextMonth

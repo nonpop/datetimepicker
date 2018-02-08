@@ -16,6 +16,7 @@ module DateTimePicker.DateUtils
 import Date
 import Date.Extra.Core
 import Date.Extra.Create
+import Date.Extra.Utils
 import String
 
 
@@ -45,27 +46,27 @@ dayToInt startOfWeek day =
                 Date.Sat ->
                     6
     in
-    case startOfWeek of
-        Date.Sun ->
-            base
+        case startOfWeek of
+            Date.Sun ->
+                base
 
-        Date.Mon ->
-            (base - 1) % 7
+            Date.Mon ->
+                (base - 1) % 7
 
-        Date.Tue ->
-            (base - 2) % 7
+            Date.Tue ->
+                (base - 2) % 7
 
-        Date.Wed ->
-            (base - 3) % 7
+            Date.Wed ->
+                (base - 3) % 7
 
-        Date.Thu ->
-            (base - 4) % 7
+            Date.Thu ->
+                (base - 4) % 7
 
-        Date.Fri ->
-            (base - 5) % 7
+            Date.Fri ->
+                (base - 5) % 7
 
-        Date.Sat ->
-            (base - 6) % 7
+            Date.Sat ->
+                (base - 6) % 7
 
 
 calculateNumberOfDaysForPreviousMonth : Int -> Int
@@ -86,7 +87,7 @@ type MonthType
     | Next
 
 
-generateCalendar : Date.Day -> Date.Month -> Int -> List Day
+generateCalendar : Date.Day -> Date.Month -> Int -> { days : List Day, weeks : List Int }
 generateCalendar firstDayOfWeek month year =
     let
         firstDateOfMonth =
@@ -117,8 +118,28 @@ generateCalendar firstDayOfWeek month year =
         nextMonth =
             List.range 1 14
                 |> List.map (Day Next)
+
+        days =
+            List.take 42 <| previousMonth ++ currentMonth ++ nextMonth
+
+        weekIfMonday date =
+            case Date.dayOfWeek date of
+                Date.Mon ->
+                    let
+                        ( _, week, _ ) =
+                            Date.Extra.Utils.isoWeek date
+                    in
+                        Just week
+
+                _ ->
+                    Nothing
+
+        weeks =
+            days
+                |> List.map (\day -> toDateTime year month day 0 0)
+                |> List.filterMap weekIfMonday
     in
-    List.take 42 <| previousMonth ++ currentMonth ++ nextMonth
+        { days = days, weeks = weeks }
 
 
 toDateTime : Int -> Date.Month -> Day -> Int -> Int -> Date.Date
@@ -133,7 +154,7 @@ toDateTime year month day hour minute =
                     Date.Extra.Create.dateFromFields year month day.day hour minute 0 0
                         |> Date.Extra.Core.lastOfPrevMonthDate
             in
-            Date.Extra.Create.dateFromFields (Date.year previousMonth) (Date.month previousMonth) day.day hour minute 0 0
+                Date.Extra.Create.dateFromFields (Date.year previousMonth) (Date.month previousMonth) day.day hour minute 0 0
 
         Next ->
             let
@@ -141,7 +162,7 @@ toDateTime year month day hour minute =
                     Date.Extra.Create.dateFromFields year month day.day hour minute 0 0
                         |> Date.Extra.Core.firstOfNextMonthDate
             in
-            Date.Extra.Create.dateFromFields (Date.year nextMonth) (Date.month nextMonth) day.day hour minute 0 0
+                Date.Extra.Create.dateFromFields (Date.year nextMonth) (Date.month nextMonth) day.day hour minute 0 0
 
 
 toDate : Int -> Date.Month -> Day -> Date.Date
