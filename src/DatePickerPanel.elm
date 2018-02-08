@@ -299,10 +299,17 @@ dayNames config =
 
         shiftAmount =
             DateTimePicker.DateUtils.dayToInt Date.Sun config.firstDayOfWeek
+
+        insertWeekNumberColumn list =
+            if config.weekNumbers then
+                th [] [] :: list
+            else
+                list
     in
         days
             |> List.Extra.splitAt shiftAmount
             |> (\( head, tail ) -> tail ++ head)
+            |> insertWeekNumberColumn
 
 
 dateClickHandler : Config a msg -> InternalState -> Int -> Date.Month -> DateTimePicker.DateUtils.Day -> msg
