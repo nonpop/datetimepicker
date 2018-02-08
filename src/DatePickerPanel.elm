@@ -14,6 +14,7 @@ import DateTimePicker.Svg
 import Html exposing (..)
 import Html.Attributes exposing (value)
 import List.Extra
+import String.Extra
 
 
 type alias State =
@@ -262,7 +263,7 @@ calendar config (InternalState state) currentDate =
 
                 weekNumberCell weekNumber =
                     td [ config.class [ WeekNumber ] ]
-                        [ text (toString weekNumber) ]
+                        [ text ("W" ++ String.Extra.fromInt weekNumber) ]
 
                 toWeekRow ( weekNumber, week ) =
                     if config.weekNumbers then
