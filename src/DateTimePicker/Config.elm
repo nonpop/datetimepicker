@@ -104,6 +104,7 @@ type alias I18n =
   - `nameOfDays` is the configuration for name of days in a week.
   - `firstDayOfWeek` is the first day of the week.
   - `weekNumbers` show/hide week numbers
+  - `weekNumberPrefix` string to prepend to each week number.
   - `titleFormatter` is the Date to String formatter for the dialog's title.
   - `footerFormatter` is the Date to String formatter for the dialog's footer.
   - `allowYearNavigation` show/hide year navigation button.
@@ -114,6 +115,7 @@ type alias DatePickerConfig otherConfig =
         | nameOfDays : NameOfDays
         , firstDayOfWeek : Date.Day
         , weekNumbers : Bool
+        , weekNumberPrefix : String
         , allowYearNavigation : Bool
     }
 
@@ -245,6 +247,7 @@ type TimePickerType
   - `nameOfDays` see `NameOfDays` for the default values.
   - `firstDayOfWeek` Default: Sunday.
   - `weekNumbers` Default: False
+  - `weekNumberPrefix` Default: "W"
   - `allowYearNavigation` Default : True
 
 -}
@@ -255,6 +258,7 @@ defaultDatePickerConfig onChange =
     , nameOfDays = defaultNameOfDays
     , firstDayOfWeek = Date.Sun
     , weekNumbers = False
+    , weekNumberPrefix = "W"
     , allowYearNavigation = True
     , i18n = defaultDateI18n
     , usePicker = True
@@ -294,6 +298,7 @@ defaultTimePickerConfig onChange =
   - `nameOfDays` see `NameOfDays` for the default values.
   - `firstDayOfWeek` Default: Sunday.
   - `weekNumbers` Default: False.
+  - `weekNumberPrefix` Default: "W"
   - `titleFormatter` Default: `"%B %Y"`
   - `fullDateFormatter` Default: `"%A, %B %d, %Y"`
   - `timeFormatter` Default: `"%I:%M %p"`
@@ -308,6 +313,7 @@ defaultDateTimePickerConfig onChange =
     , nameOfDays = defaultNameOfDays
     , firstDayOfWeek = Date.Sun
     , weekNumbers = False
+    , weekNumberPrefix = "W"
     , timePickerType = Analog
     , allowYearNavigation = True
     , i18n = defaultDateTimeI18n

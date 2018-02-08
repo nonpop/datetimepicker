@@ -27,6 +27,7 @@ type alias Config otherConfig msg =
         , nameOfDays : NameOfDays
         , firstDayOfWeek : Date.Day
         , weekNumbers : Bool
+        , weekNumberPrefix : String
         , allowYearNavigation : Bool
         , titleFormatter : Date -> String
         , footerFormatter : Date -> String
@@ -263,7 +264,7 @@ calendar config (InternalState state) currentDate =
 
                 weekNumberCell weekNumber =
                     td [ config.class [ WeekNumber ] ]
-                        [ text ("W" ++ String.Extra.fromInt weekNumber) ]
+                        [ text (config.weekNumberPrefix ++ String.Extra.fromInt weekNumber) ]
 
                 toWeekRow ( weekNumber, week ) =
                     if config.weekNumbers then
